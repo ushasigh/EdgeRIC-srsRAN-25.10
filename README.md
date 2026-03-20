@@ -63,10 +63,11 @@ EdgeRIC muApps: [Scheduler muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.
 
 ## Summary of config file locations found in this repository
 
-These files correspond to the core network functions (AMF, SMF, UPF, etc.) and should be copied to `/etc/open5gs/` before running the core network.
+
 ### open5gs
 
-``/open5gs`` --> All open5gs configs 
+``/open5gs`` --> All open5gs configs   
+These files correspond to the core network functions (AMF, SMF, UPF, etc.) and should be copied to `/etc/open5gs/` before running the core network.  
 Open5GS stores subscriber information in MongoDB (`open5gs` database). The following commands are useful for inspecting registered UEs:
 **Useful MongoDB Commands**  
 ```bash
