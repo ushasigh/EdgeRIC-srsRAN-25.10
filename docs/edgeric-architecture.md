@@ -158,23 +158,79 @@ External controllers can send commands via ZMQ PUB sockets:
 
 [MCS-muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md)  
 
-MCS values are sent as an ordered array matching the gNB's UE order (sorted by RNTI):
-- Values 0-28: Override MCS to specified value
-- Value 255: No override (use link adaptation)
 
 ```bash
-cd edgeric/muapp-mcs
+cd muapp-mcs
 
-# Interactive mode
-python3 mcs_controller.py -i
+# Fixed MCS: Set MCS=20 for all UEs
+python3 mcs_muapp.py --algorithm fixed --mcs 20
 
-# Command-line
-python3 mcs_controller.py --rnti 17921 --mcs 20
-python3 mcs_controller.py --rnti 17921 --clear
+# Random MCS: Random MCS between 10-20 for each UE
+python3 mcs_muapp.py --algorithm random
+
+# Random MCS with custom range
+python3 mcs_muapp.py --algorithm random --min-mcs 15 --max-mcs 25
+
+# CQI-based MCS: Map CQI to MCS
+python3 mcs_muapp.py --algorithm cqi
+
+# Test staleness (MCS should be rejected)
+python3 mcs_muapp.py --algorithm fixed --mcs 20 --tti-offset -3
 ```
-
 
 
 ### UE Scheduling Weight Control
 
 [Scheduling-muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md)  
+
+
+#### With Redis Algorithm Selection
+
+```bash
+# Start muApp (reads algorithm from Redis)
+python3 scheduling_muapp.py
+
+# Set algorithm via Redis
+redis-cli SET scheduling_algorithm "Fixed Weight"
+redis-cli SET scheduling_algorithm "Max CQI"
+redis-cli SET scheduling_algorithm "Max Weight"
+redis-cli SET scheduling_algorithm "Proportional Fair"
+redis-cli SET scheduling_algorithm "Round Robin"
+```
+
+#### With Fixed Algorithm (No Redis)
+
+```bash
+python3 scheduling_muapp.py --algorithm "Max CQI"
+python3 scheduling_muapp.py --algorithm "Proportional Fair"
+python3 scheduling_muapp.py --algorithm "Fixed Weight"
+```
+
+#### Available Algorithms
+
+| Algorithm | Description |
+|-----------|-------------|
+| `Fixed Weight` | Static weights (edit `fixed_weights()` function) |
+| `Max CQI` | Prioritize UE with best channel quality |
+| `Max Weight` | CQI × Backlog weighted scheduling |
+| `Proportional Fair` | Rate-proportional fairness |
+| `Round Robin` | Time-based round robin |
+
+#### Customizing Fixed Weights (Custom UE priority)
+
+Edit `scheduling_muapp.py`, function `fixed_weights()`:
+
+```python
+def fixed_weights():
+    # ...
+    for i in range(numues):
+        weights[i*2+0] = RNTIs[i]
+        # Customize weights here:
+        if i == 0:
+            weights[i*2+1] = 0.3  # First UE: 30%
+        elif i == 1:
+            weights[i*2+1] = 0.7  # Second UE: 70%
+        else:
+            weights[i*2+1] = 1.0 / numues
+    return weights
+```
