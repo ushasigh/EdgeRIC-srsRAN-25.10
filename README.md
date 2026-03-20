@@ -50,9 +50,7 @@ Run the repository in Split 8 mode: [OTA with SDR](https://edgeric.github.io/edg
 ## EdgeRIC documentation
 EdgeRIC Architecture: [Architecture](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/docs/edgeric-architecture.md)   
 EdgeRIC telemetry: [Metrics Collector](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/edgeric-collector.md) [Summary](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/docs/edgeric-architecture.md#data-flow-telemetry)   
-EdgeRIC muApps: [Scheduler muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md) [Summary](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/docs/edgeric-architecture.md#ue-scheduling-weight-control)  
-[MCS muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md) [Summary](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/docs/edgeric-architecture.md#mcs-control)  
-
+EdgeRIC muApps: [Scheduler muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md) [MCS muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md) 
 
 ## EdgeRIC with srsRAN — repository structure
 
