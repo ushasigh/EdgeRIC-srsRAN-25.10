@@ -59,6 +59,7 @@ sudo ./iperf_client_2ues_tcp.sh 13M 13M 1000 # starts TCP traffic from the CN to
 
 ## How to run EdgeRIC?
 
-**Scheduling muApp** Run various schedulers with EdgeRIC - refer to ``edgeric/muapp-scheduling``  
-**MCS muApp** Run various schedulers with EdgeRIC - refer to ``edgeric/muapp-mcs``   
+**Scheduling muApp** Run various schedulers with EdgeRIC - refer to ``edgeric/muapp-scheduling``    
+**MCS muApp** Run various schedulers with EdgeRIC - refer to ``edgeric/muapp-mcs``    
+**Collect Telemetry** Collect detailed network telemetry - refer to ``edgeric/edgeric-collector.md``     
 
