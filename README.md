@@ -61,10 +61,10 @@ EdgeRIC telemetry: [Metrics Collector](https://github.com/ushasigh/EdgeRIC-srsRA
 EdgeRIC muApps: [Scheduler muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md) [MCS muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md)  
 
 
-### Summary of all config file locations found in this repository
+## Summary of config file locations found in this repository
 
 These files correspond to the core network functions (AMF, SMF, UPF, etc.) and should be copied to `/etc/open5gs/` before running the core network.
-#### open5gs
+### open5gs
 
 ``/open5gs`` --> All open5gs configs 
 Open5GS stores subscriber information in MongoDB (`open5gs` database). The following commands are useful for inspecting registered UEs:
@@ -80,7 +80,7 @@ db.subscribers.find({}, { _id: 0, imsi: 1 }).forEach(s => print(s.imsi))
 db.subscribers.findOne({ imsi: "001010999912305" })
 ``` 
 
-#### RAN and UE
+### RAN and UE
 
 
 **Example configs:** defaults assume **10 MHz** bandwidth; **20 MHz** options are often available as comments in the same files.
