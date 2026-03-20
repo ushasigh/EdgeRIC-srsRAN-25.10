@@ -156,7 +156,7 @@ External controllers can send commands via ZMQ PUB sockets:
 
 ### MCS control
 
-[MCS-muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md)  
+[MCS-muApp Documentation](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md)  
 
 
 ```bash
@@ -181,7 +181,7 @@ python3 mcs_muapp.py --algorithm fixed --mcs 20 --tti-offset -3
 
 ### UE Scheduling Weight Control
 
-[Scheduling-muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md)  
+[Scheduling-muApp Documentation](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md)  
 
 
 #### With Redis Algorithm Selection

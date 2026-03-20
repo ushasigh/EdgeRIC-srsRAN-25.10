@@ -59,7 +59,103 @@ sudo ./iperf_client_2ues_tcp.sh 13M 13M 1000 # starts TCP traffic from the CN to
 
 ## How to run EdgeRIC?
 
-**Scheduling muApp** Run various schedulers with EdgeRIC - refer to ``edgeric/muapp-scheduling``    
-**MCS muApp** Run various schedulers with EdgeRIC - refer to ``edgeric/muapp-mcs``    
-**Collect Telemetry** Collect detailed network telemetry - refer to ``edgeric/edgeric-collector.md``     
+### Collect Telemetry (EdgeRIC Terminal 1)
+
+[Collector-Agent-documentation](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/edgeric-collector.md)
+
+```bash
+cd edgeric
+# Pretty-printed output (default)
+sudo python3 collector.py
+
+# JSON output (one line per TTI)
+sudo python3 collector.py --json
+
+# JSON to file
+sudo python3 collector.py --json --output metrics.json
+
+# Quiet mode (MAC-level only, no per-DRB details)
+sudo python3 collector.py --quiet
+```
+
+### Control the MCS (EdgeRIC Terminal 2)
+
+[MCS-muApp Documentation](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md)  
+
+```bash
+cd edgeric/muapp-mcs
+
+# Fixed MCS: Set MCS=20 for all UEs
+python3 mcs_muapp.py --algorithm fixed --mcs 20
+
+# Random MCS: Random MCS between 10-20 for each UE
+python3 mcs_muapp.py --algorithm random
+
+# Random MCS with custom range
+python3 mcs_muapp.py --algorithm random --min-mcs 15 --max-mcs 25
+
+# CQI-based MCS: Map CQI to MCS
+python3 mcs_muapp.py --algorithm cqi
+
+# Test staleness (MCS should be rejected)
+python3 mcs_muapp.py --algorithm fixed --mcs 20 --tti-offset -3
+```
+
+
+### Control the Scheduling Priority (EdgeRIC Terminal 3)
+
+[Scheduling-muApp Documentation](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md) 
+
+#### With Redis Algorithm Selection
+
+```bash
+cd edgeric/muapp-scheduling
+# Start muApp (reads algorithm from Redis)
+python3 scheduling_muapp.py
+
+# Set algorithm via Redis
+redis-cli SET scheduling_algorithm "Fixed Weight"
+redis-cli SET scheduling_algorithm "Max CQI"
+redis-cli SET scheduling_algorithm "Max Weight"
+redis-cli SET scheduling_algorithm "Proportional Fair"
+redis-cli SET scheduling_algorithm "Round Robin"
+```
+
+#### With Fixed Algorithm (No Redis)
+
+```bash
+python3 scheduling_muapp.py --algorithm "Max CQI"
+python3 scheduling_muapp.py --algorithm "Proportional Fair"
+python3 scheduling_muapp.py --algorithm "Fixed Weight"
+```
+
+#### Available Algorithms
+
+| Algorithm | Description |
+|-----------|-------------|
+| `Fixed Weight` | Static weights (edit `fixed_weights()` function) |
+| `Max CQI` | Prioritize UE with best channel quality |
+| `Max Weight` | CQI × Backlog weighted scheduling |
+| `Proportional Fair` | Rate-proportional fairness |
+| `Round Robin` | Time-based round robin |
+
+#### Customizing Fixed Weights (Custom UE priority)
+
+Edit `scheduling_muapp.py`, function `fixed_weights()`:
+
+```python
+def fixed_weights():
+    # ...
+    for i in range(numues):
+        weights[i*2+0] = RNTIs[i]
+        # Customize weights here:
+        if i == 0:
+            weights[i*2+1] = 0.3  # First UE: 30%
+        elif i == 1:
+            weights[i*2+1] = 0.7  # Second UE: 70%
+        else:
+            weights[i*2+1] = 1.0 / numues
+    return weights
+```
+
 
