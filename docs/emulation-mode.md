@@ -28,7 +28,7 @@ This repository contains all the open5gs configs used in folder ``open5gs``
 Run the GNU radio flowgraph - for two UEs run:
 ```bash
 cd scripts
-sudo python3 top_block_2ue-no_gui.py 
+sudo python3 top_block_2ue_no_gui.py 
 ```
 
 **Run the srsRAN - (Terminal 2)**
@@ -86,19 +86,19 @@ sudo python3 collector.py --quiet
 cd edgeric/muapp-mcs
 
 # Fixed MCS: Set MCS=20 for all UEs
-python3 mcs_muapp.py --algorithm fixed --mcs 20
+sudo python3 mcs_muapp.py --algorithm fixed --mcs 20
 
 # Random MCS: Random MCS between 10-20 for each UE
-python3 mcs_muapp.py --algorithm random
+sudo python3 mcs_muapp.py --algorithm random
 
 # Random MCS with custom range
-python3 mcs_muapp.py --algorithm random --min-mcs 15 --max-mcs 25
+sudo python3 mcs_muapp.py --algorithm random --min-mcs 15 --max-mcs 25
 
 # CQI-based MCS: Map CQI to MCS
-python3 mcs_muapp.py --algorithm cqi
+sudo python3 mcs_muapp.py --algorithm cqi
 
 # Test staleness (MCS should be rejected)
-python3 mcs_muapp.py --algorithm fixed --mcs 20 --tti-offset -3
+sudo python3 mcs_muapp.py --algorithm fixed --mcs 20 --tti-offset -3
 ```
 
 
@@ -111,7 +111,7 @@ python3 mcs_muapp.py --algorithm fixed --mcs 20 --tti-offset -3
 ```bash
 cd edgeric/muapp-scheduling
 # Start muApp (reads algorithm from Redis)
-python3 scheduling_muapp.py
+sudo python3 scheduling_muapp.py
 
 # Set algorithm via Redis
 redis-cli SET scheduling_algorithm "Fixed Weight"
@@ -124,9 +124,9 @@ redis-cli SET scheduling_algorithm "Round Robin"
 #### With Fixed Algorithm (No Redis)
 
 ```bash
-python3 scheduling_muapp.py --algorithm "Max CQI"
-python3 scheduling_muapp.py --algorithm "Proportional Fair"
-python3 scheduling_muapp.py --algorithm "Fixed Weight"
+sudo python3 scheduling_muapp.py --algorithm "Max CQI"
+sudo python3 scheduling_muapp.py --algorithm "Proportional Fair"
+sudo python3 scheduling_muapp.py --algorithm "Fixed Weight"
 ```
 
 #### Available Algorithms
