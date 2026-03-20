@@ -48,8 +48,8 @@ Run the repository with srsue (virtual radios over ZMQ): [Emulation Mode](https:
 Run the repository in Split 8 mode: [OTA with SDR](https://edgeric.github.io/edgeric-workshop-tutorial.html)  
 
 ## EdgeRIC documentation
-EdgeRIC Architecture: [Architecture](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/docs/edgeric-architecture.md)   
-EdgeRIC telemetry: [Metrics Collector](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/edgeric-collector.md) [Summary](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/docs/edgeric-architecture.md#data-flow-telemetry)   
+EdgeRIC Architecture: [Architecture](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/docs/edgeric-architecture.md)     
+EdgeRIC telemetry: [Metrics Collector](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/edgeric-collector.md)  
 EdgeRIC muApps: [Scheduler muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md) [MCS muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md) 
 
 ## EdgeRIC with srsRAN — repository structure
