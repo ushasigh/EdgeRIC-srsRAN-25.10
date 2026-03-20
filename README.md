@@ -43,9 +43,9 @@ cd scripts
 
 ## Tutorials
 
-Run the repository with srsue (virtual radios over ZMQ): [Emulation Mode](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/emulation-mode.md)
+Run the repository with srsue (virtual radios over ZMQ): [Emulation Mode](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/docs/emulation-mode.md)
 
-Run the repository in Split 8 mode: [OTA with SDR](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/ota-mode.md)  
+Run the repository in Split 8 mode: [OTA with SDR](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/docs/ota-mode.md)  
 
 ## EdgeRIC documentation
 EdgeRIC Architecture (Contains the summary of all telemetry and control apps): [Architecture](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/docs/edgeric-architecture.md)     
