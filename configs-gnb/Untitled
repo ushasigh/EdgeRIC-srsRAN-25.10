@@ -1,0 +1,2 @@
+find configs-srsue -name "*.log" -delete
+find configs-srsue -name "*.pcap" -delete
