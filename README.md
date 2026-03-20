@@ -49,13 +49,13 @@ High-level layout of this tree (after clone; `build/` is created by CMake and is
 | `edgeric/muapp-mcs/` | External MCS controller |
 | `edgeric/collector.py` | Standalone metrics viewer / JSON export |
 
-**Tutorials**
+### Tutorials
 
 Run the repository with srsue (virtual radios over ZMQ): [Emulation Mode](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/emulation-mode.md)
 
 Run the repository in Split 8 mode: [OTA with SDR](https://edgeric.github.io/edgeric-workshop-tutorial.html)  
 
-**Documentation**  
+### EdgeRIC documentation
 EdgeRIC Architecture: [Architecture](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/edgeric-architecture.md)   
 EdgeRIC telemetry: [Metrics Collector](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/edgeric-collector.md)  
 EdgeRIC muApps: [Scheduler muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md) [MCS muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md)  
