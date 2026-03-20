@@ -117,6 +117,8 @@ EdgeRIC is a real-time telemetry and control system for srsRAN gNB that collects
 
 ## Data Flow (Telemetry)
 
+[Collector-Agent-documentation](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/edgeric-collector.md)
+
 **Metrics Collection (Per Layer)**  
 
 | Layer | Reporter Function | Key Type | Metrics |
@@ -127,7 +129,6 @@ EdgeRIC is a real-time telemetry and control system for srsRAN gNB that collects
 | **PDCP** | `report_pdcp_metrics()` | cu_up_ue_index → RNTI | TX/RX PDUs, SDUs, dropped packets, latency (per DRB) |
 | **GTP** | `report_gtp_dl/ul_pkt()` | cu_up_ue_index | DL/UL packet counts and bytes (N3 interface) |
 
-**Usage** 
 ```bash
 # Pretty-printed output (default)
 sudo python3 collector.py
@@ -151,15 +152,16 @@ External controllers can send commands via ZMQ PUB sockets:
 | `ipc:///tmp/control_mcs` | `mcs_control` | Override MCS selection (255 = no override) |
 | `ipc:///tmp/control_weights` | `SchedulingWeights` | Override PF scheduler weights |
 
-[Collector-Agent-documentation](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/edgeric-collector.md)
+
 
 ### MCS control
+
+[MCS-muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md)  
 
 MCS values are sent as an ordered array matching the gNB's UE order (sorted by RNTI):
 - Values 0-28: Override MCS to specified value
 - Value 255: No override (use link adaptation)
 
-**Usage**  
 ```bash
 cd edgeric/muapp-mcs
 
@@ -171,11 +173,8 @@ python3 mcs_controller.py --rnti 17921 --mcs 20
 python3 mcs_controller.py --rnti 17921 --clear
 ```
 
-[MCS-muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md)
+
 
 ### UE Scheduling Weight Control
 
-**Usage**  
-
-
-[Scheduling-muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md)
+[Scheduling-muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md)  
