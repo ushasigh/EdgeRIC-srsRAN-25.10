@@ -1,0 +1,101 @@
+# This example configuration outlines how to configure the srsRAN Project gNB to create a single TDD cell
+# transmitting in band 78, with 20 MHz bandwidth and 30 kHz sub-carrier-spacing. A USRP B200 is configured
+# as the RF frontend using split 8. Note in this example an external clock source is not used, so the sync
+# is not defined and the default is used.
+
+cu_cp:
+  amf:
+    addr: 137.110.111.11 #127.0.1.100
+    port: 38412
+    bind_addr: 137.110.111.11 #127.0.0.1
+    supported_tracking_areas:
+      - tac: 1
+        plmn_list:
+          - plmn: "00101"
+            tai_slice_support_list:
+              - sst: 1
+                sd: 1
+              - sst: 1
+cu_up:
+  ngu:
+    socket:
+      - bind_addr: 192.168.2.105   # Different IP from UPF (137.110.111.11 is used by UPF)
+    
+ru_sdr:
+  device_driver: uhd
+  # device_args: type=n3xx,num_recv_frames=64,num_send_frames=64
+  device_args: type=n3xx,addr=192.168.20.2,master_clock_rate=122.88e6,num_recv_frames=64,num_send_frames=64,recv_frame_size=8000,send_frame_size=8000
+  srate: 61.44  # Required for 20 MHz BW with 30 kHz SCS
+  #otw_format: sc12
+  tx_gain: 50
+  rx_gain: 50
+
+cell_cfg:
+  dl_arfcn: 632628
+  band: 78
+  channel_bandwidth_MHz: 20
+  common_scs: 30
+  plmn: "00101"
+  tac: 1
+  pci: 1
+
+log:
+  filename: /tmp/gnb.log
+  all_level: none #warning #debug
+
+pcap:
+  mac_enable: true #true
+  mac_filename: /tmp/gnb_mac.pcap
+  ngap_enable: false #true
+  ngap_filename: /tmp/gnb_ngap.pcap
+  n3_enable: false #true
+  n3_filename: /tmp/gnb_n3.pcap
+
+  
+remote_control:
+  enabled: true                        # Enable remote control server for JSON metrics
+  bind_addr: 127.0.0.1                 # Remote control server bind address
+  port: 55555                          # Remote control server port (must match metrics receiver)
+  # enable_metrics_subscription: true    # Enable metrics subscription via remote control
+
+metrics:
+  enable_json: true                    # Enable JSON metrics reporting
+  autostart_stdout_metrics: true       # Optional BOOLEAN (false). Sets whether or not to autostart stdout metrics reporting. Supported [false, true].
+  enable_log: false                     # Optional BOOLEAN (false). Enables log metrics reporting.
+  enable_verbose: false                 # Optional BOOLEAN (false). Enables extended detail metrics reporting.
+  layers: 
+    enable_app_usage: false             # Optional BOOLEAN (false). Enables application usage metrics.
+    enable_ngap: true                  # Optional BOOLEAN (false). Enables NGAP metrics.
+    enable_e1ap: false                  # Optional BOOLEAN (false). Enables E1AP metrics.
+    enable_pdcp: true                  # Optional BOOLEAN (false). Enables PDCP metrics.
+    enable_rrc: false                   # Optional BOOLEAN (false). Enables RRC metrics.
+    skip_cu_up_executor: true           # Optional BOOLEAN (true). Whether to skip logging CU-UP executor metrics when executor logging is enabled application wide.
+    enable_sched: true                  # Optional BOOLEAN (true). Enables DU scheduler metrics.
+    enable_rlc: true                   # Optional BOOLEAN (false). Enables RLC metrics.
+    enable_mac: true                   # Optional BOOLEAN (false). Enables MAC metrics.
+    enable_executor: false              # Optional BOOLEAN (false). Whether to log application executors metrics.
+    enable_du_low: false                # Optional BOOLEAN (false). Enables DU low metrics (upper physical layer).
+    enable_ru: false                    # Optional BOOLEAN (false). Enables Radio Unit metrics.
+  periodicity: 
+    app_usage_report_period: 1000       # Optional UINT (1000). Application resource usage metrics report period in milliseconds.
+    cu_cp_report_period: 100 #1000           # Optional UINT (1000). CU-CP metrics report period in milliseconds.
+    cu_up_report_period: 100 #1000           # Optional UINT (1000). CU-UP metrics report period in milliseconds.
+    du_report_period: 100 #1000              # Optional UINT (1000). DU statistics report period in milliseconds. Supported: [0 - 10485760].
+    executors_report_period: 1000 #1000       # Optional UINT (1000). Executors metrics report period in milliseconds. Supported: [0 - 10485760].
+
+cu_cp:
+  max_nof_dus: 6                        # Optional UINT. Maximum number of DU connections that the CU-CP may accept.
+  max_nof_cu_ups: 6                     # Optional UINT. Maximum number of CU-UP connections that the CU-CP may accept.
+  max_nof_ues: 8192                     # Optional UINT. Maximum number of UEs that the CU-CP may accept.
+  max_nof_drbs_per_ue: 8                # Optional UINT. Maximum number of DRBs per UE. Supported: [1 - 29].
+  inactivity_timer: 7200                 # Optional INT (120). Sets the UE/PDU Session/DRB inactivity timer in seconds. Supported: [1 - 7200].
+  request_pdu_session_timeout: 30        # Optional INT (3). Timeout for the setup of a PDU session after an InitialUeMessage was sent to the core, in seconds. The timeout must be larger than T310. If the value is reached, the UE will be released
+
+# expert_phy:
+#   max_proc_delay: 5                           # Maximum processing delay in slots (helps with uplink task scheduling)
+#   pusch_dec_max_iterations: 10                # PUSCH decoder max iterations
+
+# expert_execution:
+#   threads:
+#     lower_phy:
+#       execution_profile: single               # Lower PHY executor profile: [single, dual, triple]
