@@ -53,22 +53,32 @@ High-level layout of this tree (after clone; `build/` is created by CMake and is
 
 Run the repository with srsue (virtual radios over ZMQ): [Emulation Mode](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/emulation-mode.md)
 
-Run the repository in Split 8 mode: https://edgeric.github.io/edgeric-workshop-tutorial.html  
+Run the repository in Split 8 mode: [OTA with SDR](https://edgeric.github.io/edgeric-workshop-tutorial.html)  
 
 **Documentation**  
-EdgeRIC Architecture: edgeric.md
+EdgeRIC Architecture: [Architecture](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/edgeric-architecture.md) 
+EdgeRIC telemetry: [Metrics Collector](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/edgeric-collector.md)
+EdgeRIC muApps: [Scheduler muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-scheduling/README.md) [MCS muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/edgeric/muapp-mcs/README.md)  
+
 
 ### Summary of all config file locations found in this repository
+**open5gs**
 ``/open5gs`` --> All open5gs configs  
-**Configs below are for a 10MHz BW system, 20MHz settings are also available as comments**  
-``/srs-4G-UE/.config/ue-4g-zmq.conf`` --> config file to run 1 srsue in zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database        
-``/srs-4G-UE/.config/ue1-4g-zmq.conf`` --> config file for UE1 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database        
-``/srs-4G-UE/.config/ue2-4g-zmq.conf`` --> config file for UE2 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database     
-``/srs-4G-UE/.config/ue3-4g-zmq.conf`` --> config file for UE3 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database     
-``/srs-4G-UE/.config/ue4-4g-zmq.conf`` --> config file for UE4 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database     
-``/srsRAN-5G-ER/configs/n320-ota-amarisoft.yml`` --> run srsgnb in Over the air mode with usrp N320, in section ``cell_cfg`` you can change the band and bandwidth of operation      
-``/srsRAN-5G-ER/configs/zmq-mode.yml`` --> run srsgnb in zmq mode with 1 srsue     
-``/srsRAN-5G-ER/configs/zmq-mode-multi-ue.yml`` --> run srsgnb in zmq mode for multiple UEs     
+```bash
+## Some useful command for database queries for registered users with open5gs core network
+mongosh # use mongodb
+use open5gs # switch to the open5gs webui database
+db.subscribers.find({}, { _id: 0, imsi: 1 }).forEach(s => print(s.imsi)) ## view all registered imsis
+db.subscribers.findOne({ imsi: "001010999912305" }) ## view all entries for a specific imsi
+```
+**Configs below are for a 10MHz BW system, 20MHz settings are also available as comments**        
+``configs-srsue/ue1-4g-zmq.conf`` --> config file for UE1 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database        
+``configs-srsue/ue2-4g-zmq.conf`` --> config file for UE2 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database     
+``configs-srsue/ue3-4g-zmq.conf`` --> config file for UE3 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database     
+``configs-srsue/ue4-4g-zmq.conf`` --> config file for UE4 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database     
+``configs-gnb/n320-ota-amarisoft.yml`` --> run srsgnb in Over the air mode with usrp N320, in section ``cell_cfg`` you can change the band and bandwidth of operation      
+``configs-gnb/zmq-mode-10Mhz-UG.yml`` --> run srsgnb in zmq mode with srsue, BW - 10MHz    
+   
 
 For a full set of allowed configs from srsRAN, refer [here](https://docs.srsran.com/projects/project/en/latest/user_manuals/source/config_ref.html)
 
