@@ -640,7 +640,7 @@ endfunction()
 ########################################################################
 
 add_subdirectory(apps)
-add_subdirectory(configs)
+add_subdirectory(configs-gnb)
 add_subdirectory(docs)
 add_subdirectory(external)
 add_subdirectory(lib)
