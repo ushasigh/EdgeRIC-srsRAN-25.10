@@ -1,16 +1,5 @@
 
-## Build the EdgeRIC compatible srsRAN network
-Make sure to install all dependencies
-```bash
-sudo apt-get update && sudo apt-get install -y \
-  cmake make gcc g++ pkg-config \
-  libfftw3-dev libmbedtls-dev libsctp-dev libyaml-cpp-dev \
-  libzmq3-dev libprotobuf-dev protobuf-compiler
-```
-```bash
-sudo ./make-ran-er.sh # Build the EdgeRIC comptaible RAN
-sudo ./make-ue.sh # Build the srsue
-```
+
 # Run the Network
 ## Core Network (CN)
 

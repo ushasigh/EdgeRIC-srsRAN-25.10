@@ -6,57 +6,40 @@ Refer to full paper: https://www.usenix.org/system/files/nsdi24-ko.pdf
 Refer to EdgeRIC website: https://edgeric.github.io/  
 
 
-EdgeRIC with srsRAN — repository structure
--------------------------------------------
+## Build the repository
 
-High-level layout (after clone). `build/` is produced by CMake and is usually not committed.
+```bash
+####### 1. Clone the repository
+git clone https://github.com/ushasigh/EdgeRIC-srsRAN-25.10.git
+cd EdgeRIC-srsRAN-25.10
 
+####### 2. Git submodules (srsUE stack)
+#(If you cloned without submodules, the next step still fetches them.)
+git submodule update --init --recursive
+# This populates `srsRAN_4G/` (required for `scripts/make-ue.sh`).
+
+####### 3. System dependencies (Ubuntu / Debian)
+sudo apt-get update && sudo apt-get install -y \
+  cmake make gcc g++ pkg-config \
+  libfftw3-dev libmbedtls-dev libsctp-dev libyaml-cpp-dev \
+  libzmq3-dev libprotobuf-dev protobuf-compiler
+
+#######  4. Protobufs
+## RAN (C++) protobufs
+cd lib/protobufs
+protoc --cpp_out=../edgeric *.proto
+
+## EdgeRIC (python) protobufs
+cd edgeric/protobufs
+protoc --python_out=.. *.proto
+cd ../..
+
+####### 5. Build RAN (gNB with EdgeRIC + ZMQ) and srsUE
+cd scripts
+./make-ran.sh    # cmake + make; EdgeRIC-enabled RAN with ENABLE_ZEROMQ=ON
+./make-ue.sh     # build srsUE inside srsRAN_4G submodule
+# After a successful build, look under `build/apps/gnb/` for **gnb** and under `srsRAN_4G/build/` for the **srsue** binary (exact subpath depends on srsRAN_4G CMake output).
 ```
-.
-├── apps/                    # gNB, CU, DU, DU-low, helpers, services, flexible O-DU units
-├── cmake/                   # CMake modules
-├── configs/                 # Upstream example gNB / CU / DU YAML (srsRAN Project)
-├── configs-gnb/             # Project gNB configs (ZMQ emulation, OTA N320, …)
-├── configs-srsue/           # srsUE `.conf` files for multi-UE ZMQ / emulation
-├── docker/                  # Container and observability assets
-├── docs/                    # Additional srsRAN documentation
-├── edgeric/                 # EdgeRIC Python side: muApps, collector, shared protobufs
-│   ├── collector.py         # Subscribe to per-TTI metrics (TtiMetrics)
-│   ├── protobufs/           # metrics.proto, control_weights.proto, control_mcs.proto → Python
-│   ├── muapp-scheduling/    # Scheduling-weights muApp (Redis / algorithms)
-│   ├── muapp-mcs/           # MCS-override muApp
-│   ├── metrics_pb2.py, …    # Generated `*_pb2.py` after `protoc` (see edgeric/protobufs/)
-│   ├── edgeric-architecture.md
-│   ├── requirements.txt
-│   └── venv/                # Optional local Python env (often gitignored)
-├── external/                # Bundled third-party sources (fmt, CLI11, …)
-├── include/srsran/          # Public C++ headers
-├── lib/                     # Core RAN libraries (L1/L2/L3, scheduler, …)
-│   ├── edgeric/             # RAN EdgeRIC agent (ZMQ, protobuf, metrics export)
-│   └── protobufs/           # .proto sources compiled for C++ EdgeRIC
-├── open5gs/                 # Open5GS-related configs
-├── scripts/                 # Build, run gNB/UE, Open5GS helper scripts
-├── srsRAN_4G/               # Git submodule: srsUE / srsENB stack (emulation-mode UE)
-├── traffic-generator/       # Example iperf / traffic scripts for multi-UE tests
-├── tests/                   # Unit and integration tests
-├── utils/                   # Utilities
-├── emulation-mode.md        # How to run ZMQ / multi-UE emulation
-├── srsRAN-readme.md         # Upstream srsRAN Project build notes (reference)
-├── CMakeLists.txt
-├── LICENSE
-└── README.md
-```
-
-**EdgeRIC-related paths**
-
-| Path | Role |
-|------|------|
-| `lib/edgeric/` | RAN-side EdgeRIC: metrics publishing, weight/MCS subscribers |
-| `lib/protobufs/` | Protobuf definitions compiled into the DU/gNB |
-| `edgeric/protobufs/` | Same schemas for Python (`protoc --python_out=..`) |
-| `edgeric/muapp-scheduling/` | External scheduling controller (weights → RAN) |
-| `edgeric/muapp-mcs/` | External MCS controller |
-| `edgeric/collector.py` | Standalone metrics viewer / JSON export |
 
 ## Tutorials
 
@@ -108,4 +91,53 @@ db.subscribers.findOne({ imsi: "001010999912305" })
 For a full set of allowed configs from srsRAN, refer [here](https://docs.srsran.com/projects/project/en/latest/user_manuals/source/config_ref.html)
 
 
+## EdgeRIC with srsRAN — repository structure
 
+High-level layout (after clone). `build/` is produced by CMake and is usually not committed.
+
+```
+.
+├── apps/                    # gNB, CU, DU, DU-low, helpers, services, flexible O-DU units
+├── cmake/                   # CMake modules
+├── configs/                 # Upstream example gNB / CU / DU YAML (srsRAN Project)
+├── configs-gnb/             # Project gNB configs (ZMQ emulation, OTA N320, …)
+├── configs-srsue/           # srsUE `.conf` files for multi-UE ZMQ / emulation
+├── docker/                  # Container and observability assets
+├── docs/                    # Additional srsRAN documentation
+├── edgeric/                 # EdgeRIC Python side: muApps, collector, shared protobufs
+│   ├── collector.py         # Subscribe to per-TTI metrics (TtiMetrics)
+│   ├── protobufs/           # metrics.proto, control_weights.proto, control_mcs.proto → Python
+│   ├── muapp-scheduling/    # Scheduling-weights muApp (Redis / algorithms)
+│   ├── muapp-mcs/           # MCS-override muApp
+│   ├── metrics_pb2.py, …    # Generated `*_pb2.py` after `protoc` (see edgeric/protobufs/)
+│   ├── edgeric-architecture.md
+│   ├── requirements.txt
+│   └── venv/                # Optional local Python env (often gitignored)
+├── external/                # Bundled third-party sources (fmt, CLI11, …)
+├── include/srsran/          # Public C++ headers
+├── lib/                     # Core RAN libraries (L1/L2/L3, scheduler, …)
+│   ├── edgeric/             # RAN EdgeRIC agent (ZMQ, protobuf, metrics export)
+│   └── protobufs/           # .proto sources compiled for C++ EdgeRIC
+├── open5gs/                 # Open5GS-related configs
+├── scripts/                 # Build, run gNB/UE, Open5GS helper scripts
+├── srsRAN_4G/               # Git submodule: srsUE / srsENB stack (emulation-mode UE)
+├── traffic-generator/       # Example iperf / traffic scripts for multi-UE tests
+├── tests/                   # Unit and integration tests
+├── utils/                   # Utilities
+├── emulation-mode.md        # How to run ZMQ / multi-UE emulation
+├── srsRAN-readme.md         # Upstream srsRAN Project build notes (reference)
+├── CMakeLists.txt
+├── LICENSE
+└── README.md
+```
+
+**EdgeRIC-related paths**
+
+| Path | Role |
+|------|------|
+| `lib/edgeric/` | RAN-side EdgeRIC: metrics publishing, weight/MCS subscribers |
+| `lib/protobufs/` | Protobuf definitions compiled into the DU/gNB |
+| `edgeric/protobufs/` | Same schemas for Python (`protoc --python_out=..`) |
+| `edgeric/muapp-scheduling/` | External scheduling controller (weights → RAN) |
+| `edgeric/muapp-mcs/` | External MCS controller |
+| `edgeric/collector.py` | Standalone metrics viewer / JSON export |
