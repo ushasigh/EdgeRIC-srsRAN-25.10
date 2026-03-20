@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+// Scheduling weights for proportional fair scheduler
+// The muApp sends this message with per-UE PRB weights
+// Format: UE i receives (weight_i / sum_weights) * available_prbs PRBs
+message SchedulingWeights {
+    uint32 ran_index = 1;           // RAN instance index (for multi-RAN deployments)
+    uint32 tti_index = 2;           // TTI when decision was made (for staleness check)
+    repeated UeWeight ue_weights = 3;  // Per-UE weights indexed by RNTI
+}
+
+// Per-UE weight specification
+message UeWeight {
+    uint32 rnti = 1;                // UE RNTI
+    float weight = 2;               // PRB weight multiplier (0.0 = no allocation, 1.0 = fair share)
+}
+

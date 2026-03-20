@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+// MCS control message for dynamic MCS override
+// The muApp sends this message with per-UE MCS values
+// MCS value of 255 means "no override" (use link adaptation)
+message McsControl {
+    uint32 ran_index = 1;           // RAN instance index (for multi-RAN deployments)
+    uint32 tti_index = 2;           // TTI when decision was made (for staleness check)
+    repeated UeMcs ue_mcs = 3;      // Per-UE MCS indexed by RNTI
+}
+
+// Per-UE MCS specification
+message UeMcs {
+    uint32 rnti = 1;                // UE RNTI
+    uint32 mcs = 2;                 // MCS index (0-28, or 255 for no override)
+}
