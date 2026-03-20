@@ -1,15 +1,9 @@
 # EdgeRIC
 This repository contains the EdgeRIC-enabled RAN stack built on top of **srsRAN_Project (v25.10)**, with **Open5GS** as the core network. 
 
-Refer to full paper: https://www.usenix.org/system/files/nsdi24-ko.pdf
+Refer to full paper: https://www.usenix.org/system/files/nsdi24-ko.pdf  
 
-Refer to EdgeRIC website: https://edgeric.github.io/
-
-Refer to how to run the repository in emulation mode (virtual radios over ZMQ with srsue): https://edgeric.github.io/edgeric-workshop-tutorial.html
-
-Refer to how to run the repository in Split 8 mode: https://edgeric.github.io/edgeric-workshop-tutorial.html  
-
-Architecture: edgeric.md
+Refer to EdgeRIC website: https://edgeric.github.io/  
 
 
 EdgeRIC with srsRAN Repository structure
@@ -54,6 +48,15 @@ High-level layout of this tree (after clone; `build/` is created by CMake and is
 | `edgeric/muapp-scheduling/` | External scheduling controller (weights → RAN) |
 | `edgeric/muapp-mcs/` | External MCS controller |
 | `edgeric/collector.py` | Standalone metrics viewer / JSON export |
+
+**Tutorials**
+
+Run the repository with srsue (virtual radios over ZMQ): [Emulation Mode](https://github.com/ushasigh/EdgeRIC-srsRAN-25.10/blob/main/emulation-mode.md)
+
+Run the repository in Split 8 mode: https://edgeric.github.io/edgeric-workshop-tutorial.html  
+
+**Documentation**  
+EdgeRIC Architecture: edgeric.md
 
 ### Summary of all config file locations found in this repository
 ``/open5gs`` --> All open5gs configs  
