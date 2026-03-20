@@ -62,22 +62,37 @@ EdgeRIC muApps: [Scheduler muApp](https://github.com/ushasigh/EdgeRIC-srsRAN-25.
 
 
 ### Summary of all config file locations found in this repository
-**open5gs**
-``/open5gs`` --> All open5gs configs  
+
+These files correspond to the core network functions (AMF, SMF, UPF, etc.) and should be copied to `/etc/open5gs/` before running the core network.
+#### open5gs
+
+``/open5gs`` --> All open5gs configs 
+Open5GS stores subscriber information in MongoDB (`open5gs` database). The following commands are useful for inspecting registered UEs:
+**Useful MongoDB Commands**  
 ```bash
-## Some useful command for database queries for registered users with open5gs core network
-mongosh # use mongodb
-use open5gs # switch to the open5gs webui database
-db.subscribers.find({}, { _id: 0, imsi: 1 }).forEach(s => print(s.imsi)) ## view all registered imsis
-db.subscribers.findOne({ imsi: "001010999912305" }) ## view all entries for a specific imsi
-```
-**Configs below are for a 10MHz BW system, 20MHz settings are also available as comments**        
-``configs-srsue/ue1-4g-zmq.conf`` --> config file for UE1 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database        
-``configs-srsue/ue2-4g-zmq.conf`` --> config file for UE2 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database     
-``configs-srsue/ue3-4g-zmq.conf`` --> config file for UE3 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database     
-``configs-srsue/ue4-4g-zmq.conf`` --> config file for UE4 in multi UE zmq mode, check section ``[usim]`` and appropriately add those credentials in the open5gs webui database     
-``configs-gnb/n320-ota-amarisoft.yml`` --> run srsgnb in Over the air mode with usrp N320, in section ``cell_cfg`` you can change the band and bandwidth of operation      
-``configs-gnb/zmq-mode-10Mhz-UG.yml`` --> run srsgnb in zmq mode with srsue, BW - 10MHz    
+mongosh
+use open5gs
+
+# List all registered IMSIs
+db.subscribers.find({}, { _id: 0, imsi: 1 }).forEach(s => print(s.imsi))
+
+# View full entry for a specific IMSI
+db.subscribers.findOne({ imsi: "001010999912305" })
+``` 
+
+#### RAN and UE
+
+
+**Example configs:** defaults assume **10 MHz** bandwidth; **20 MHz** options are often available as comments in the same files.
+
+| Config file | Description |
+|-------------|-------------|
+| `configs-srsue/ue1-4g-zmq.conf` | UE1 in multi-UE ZMQ mode; see `[usim]` and match credentials in the Open5GS WebUI subscriber DB. |
+| `configs-srsue/ue2-4g-zmq.conf` | UE2 in multi-UE ZMQ mode; see `[usim]` and match credentials in the Open5GS WebUI subscriber DB. |
+| `configs-srsue/ue3-4g-zmq.conf` | UE3 in multi-UE ZMQ mode; see `[usim]` and match credentials in the Open5GS WebUI subscriber DB. |
+| `configs-srsue/ue4-4g-zmq.conf` | UE4 in multi-UE ZMQ mode; see `[usim]` and match credentials in the Open5GS WebUI subscriber DB. |
+| `configs-gnb/n320-ota-amarisoft.yml` | OTA gNB with USRP N320; in `cell_cfg` set band and channel bandwidth. |
+| `configs-gnb/zmq-mode-10Mhz-UG.yml` | ZMQ mode with srsUE; 10 MHz bandwidth. |
    
 
 For a full set of allowed configs from srsRAN, refer [here](https://docs.srsran.com/projects/project/en/latest/user_manuals/source/config_ref.html)
