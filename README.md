@@ -172,7 +172,7 @@ For exact details on running srsRAN Project in any configuration, see [the docum
 
 For information on configuring and running srsRAN for various different use cases,  check our [tutorials](https://docs.srsran.com/projects/project/en/latest/tutorials/source/index.html).
 
-Repository structure
+EdgeRIC with srsRAN Repository structure
 --------------------
 
 High-level layout of this tree (after clone; `build/` is created by CMake and is not versioned):
